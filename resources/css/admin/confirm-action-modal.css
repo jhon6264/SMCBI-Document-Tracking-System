@@ -1,0 +1,150 @@
+.confirm-action-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0);
+    backdrop-filter: blur(0px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 10000;
+    font-family: var(--cam-font);
+    transition: background 0.22s ease, backdrop-filter 0.22s ease;
+}
+
+.confirm-action-overlay.open {
+    background: rgba(15, 23, 42, 0.42);
+    backdrop-filter: blur(2px);
+}
+
+.confirm-action-overlay.closing {
+    background: rgba(15, 23, 42, 0);
+    backdrop-filter: blur(0px);
+}
+
+.confirm-action-modal {
+    width: 100%;
+    max-width: 420px;
+    background: var(--cam-white);
+    border-radius: var(--cam-radius-lg);
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.confirm-action-modal.open {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.confirm-action-modal.closing {
+    opacity: 0;
+    transform: translateY(24px);
+}
+
+.cam-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 18px 14px;
+    border-bottom: 1px solid #eef2f7;
+    background: var(--cam-white);
+}
+
+.cam-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cam-text);
+}
+
+.cam-close-btn {
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 21px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.cam-close-btn:hover {
+    background: #eef2f7;
+    transform: translateY(-1px);
+}
+
+.cam-body {
+    padding: 18px;
+}
+
+.cam-body p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #475569;
+}
+
+.cam-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 0 18px 18px;
+}
+
+.cam-btn {
+    border: none;
+    padding: 11px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cam-btn:hover {
+    transform: translateY(-1px);
+}
+
+.cam-btn:disabled,
+.cam-close-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    transform: none;
+}
+
+.cam-btn-cancel {
+    background: #eef2f7;
+    color: #334155;
+}
+
+.cam-btn-danger {
+    background: var(--cam-accent);
+    color: var(--cam-white);
+    box-shadow: 0 10px 18px rgba(232, 82, 35, 0.18);
+}
+
+.cam-btn-success {
+    background: var(--cam-green);
+    color: var(--cam-white);
+    box-shadow: 0 10px 18px rgba(16, 185, 129, 0.18);
+}
+
+@media (max-width: 640px) {
+    .confirm-action-modal {
+        max-width: 100%;
+    }
+
+    .cam-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cam-btn {
+        width: 100%;
+    }
+}
