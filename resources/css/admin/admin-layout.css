@@ -1,7 +1,15 @@
 .admin-layout {
     display: flex;
     min-height: 100vh;
-    background: var(--bg-color);
+    background:
+        radial-gradient(circle at top left, var(--blue-tint-color), transparent 24%),
+        radial-gradient(circle at bottom right, var(--teal-tint-color), transparent 20%),
+        linear-gradient(
+            160deg,
+            var(--bg-color) 0%,
+            color-mix(in srgb, var(--surface-color) 84%, var(--bg-color) 16%) 58%,
+            var(--bg-color) 100%
+        );
     font-family: var(--font-primary);
     color: var(--text-color);
 }
@@ -9,9 +17,13 @@
 .admin-sidebar {
     width: 290px;
     min-width: 290px;
-    background: var(--sidebar-color);
-    color: var(--white-color);
-    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--sidebar-color) 94%, var(--surface-color) 6%),
+        color-mix(in srgb, var(--sidebar-color) 74%, var(--bg-color) 26%)
+    );
+    color: var(--text-color);
+    border-right: 1px solid var(--border-color);
     border-top-right-radius: 24px;
     border-bottom-right-radius: 24px;
     display: flex;
@@ -20,11 +32,22 @@
     padding: 20px 16px;
     transition: width 0.25s ease, min-width 0.25s ease;
     box-shadow: var(--sidebar-shadow);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
 }
 
 .admin-layout.collapsed .admin-sidebar {
     width: 96px;
     min-width: 96px;
+}
+
+.admin-sidebar [data-al-sidebar-item] {
+    transform-origin: center top;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
 }
 
 .sidebar-top {
@@ -38,7 +61,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    border-bottom: 1px solid var(--border-hover-color);
     padding-bottom: 18px;
     min-height: 72px;
 }
@@ -60,8 +83,8 @@
     min-width: 50px;
     border-radius: 50%;
     overflow: hidden;
-    background: var(--white-color);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: color-mix(in srgb, var(--text-color) 8%, transparent);
+    border: 1px solid var(--border-hover-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -85,7 +108,7 @@
     margin: 0;
     font-size: 21px;
     font-weight: 700;
-    color: var(--white-color);
+    color: var(--text-color);
     white-space: nowrap;
 }
 
@@ -93,7 +116,7 @@
     margin: 0;
     font-size: 13px;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-muted-color);
     white-space: nowrap;
 }
 
@@ -102,7 +125,7 @@
     background: transparent;
     cursor: pointer;
     font-size: 24px;
-    color: var(--white-color);
+    color: var(--text-color);
     width: 40px;
     height: 40px;
     border-radius: 10px;
@@ -114,7 +137,7 @@
 }
 
 .sidebar-toggle:hover {
-    background: rgba(255, 255, 255, 0.14);
+    background: color-mix(in srgb, var(--text-color) 10%, transparent);
 }
 
 .admin-layout.collapsed .sidebar-toggle {
@@ -134,7 +157,7 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.72);
+    color: color-mix(in srgb, var(--text-color) 62%, transparent);
 }
 
 .nav-list {
@@ -154,17 +177,22 @@
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
-    color: var(--white-color);
+    color: var(--text-color);
     width: 100%;
 }
 
 .admin-nav-item:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: color-mix(in srgb, var(--text-color) 8%, transparent);
 }
 
 .admin-nav-item.active {
-    background: rgba(255, 255, 255, 0.18);
-    color: var(--white-color);
+    background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--primary-color) 20%, transparent),
+        color-mix(in srgb, var(--primary-dark-color) 14%, transparent)
+    );
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary-color) 20%, transparent);
+    color: var(--text-color);
 }
 
 .nav-left {
@@ -217,8 +245,33 @@
     padding: 14px 10px;
 }
 
+.admin-color-mode-trigger {
+    border: 1px solid transparent;
+}
+
+.admin-color-mode-trigger:hover {
+    border-color: color-mix(in srgb, var(--primary-color) 30%, transparent);
+    background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+
+.admin-color-mode-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--text-color) 72%, transparent);
+    letter-spacing: 0.01em;
+    text-transform: capitalize;
+}
+
+.admin-layout.collapsed .admin-color-mode-trigger {
+    justify-content: center;
+}
+
+.admin-layout.collapsed .admin-color-mode-text {
+    display: none;
+}
+
 .sidebar-footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    border-top: 1px solid var(--border-hover-color);
     padding-top: 18px;
     display: flex;
     flex-direction: column;
@@ -237,8 +290,8 @@
     height: 44px;
     min-width: 44px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.14);
-    color: var(--white-color);
+    background: color-mix(in srgb, var(--text-color) 9%, transparent);
+    color: var(--text-color);
     font-size: 28px;
     display: flex;
     align-items: center;
@@ -253,7 +306,7 @@
     margin: 0;
     font-size: 15px;
     font-weight: 600;
-    color: var(--white-color);
+    color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -262,7 +315,7 @@
 .profile-role {
     margin: 0;
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.78);
+    color: var(--text-muted-color);
     text-transform: capitalize;
     white-space: nowrap;
     overflow: hidden;
@@ -273,7 +326,7 @@
     width: 100%;
     border: none;
     background: transparent;
-    color: var(--white-color);
+    color: var(--text-color);
     padding: 14px 12px;
     border-radius: var(--radius-md);
     display: flex;
@@ -286,7 +339,7 @@
 }
 
 .logout-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: color-mix(in srgb, var(--text-color) 8%, transparent);
 }
 
 .admin-layout.collapsed .logout-btn {
@@ -296,9 +349,11 @@
 
 .admin-main {
     flex: 1;
+    min-width: 0;
     padding: 28px;
-    background: var(--bg-color);
+    background: transparent;
     overflow-x: auto;
+    overflow-y: visible;
 }
 
 .admin-page {
@@ -325,7 +380,7 @@
 .admin-page-subtitle {
     margin: 6px 0 0;
     font-size: 15px;
-    color: #6b7280;
+    color: var(--text-muted-color);
 }
 
 .admin-card-grid {
@@ -336,39 +391,61 @@
 
 .admin-stat-card,
 .admin-content-card {
-    background: var(--white-color);
+    background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--card-color) 96%, var(--surface-color) 4%),
+        color-mix(in srgb, var(--card-color) 84%, var(--panel-color) 16%)
+    );
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--text-color) 6%, transparent),
+        0 20px 40px color-mix(in srgb, var(--text-color) 16%, transparent);
 }
 
 .admin-stat-title {
     margin: 0 0 8px;
     font-size: 14px;
-    color: #6b7280;
+    color: var(--text-muted-color);
 }
 
 .admin-stat-value {
     margin: 0;
     font-size: 28px;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--text-color);
 }
 
 .admin-content-card h3 {
     margin: 0 0 8px;
     font-size: 18px;
+    color: var(--text-color);
 }
 
 .admin-content-card p {
     margin: 0;
-    color: #6b7280;
+    color: var(--text-muted-color);
     line-height: 1.6;
 }
 
 @media (max-width: 992px) {
     .admin-card-grid {
         grid-template-columns: 1fr;
+    }
+
+    .admin-sidebar {
+        position: static;
+        height: auto;
+        overflow-y: visible;
+        border-radius: 0;
+    }
+
+    .admin-layout {
+        flex-direction: column;
+    }
+
+    .admin-main {
+        padding: 20px;
     }
 }

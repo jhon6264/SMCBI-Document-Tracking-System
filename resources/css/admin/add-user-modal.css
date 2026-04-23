@@ -9,12 +9,12 @@
     padding: 20px;
     z-index: 9999;
     font-family: var(--aum-font);
-    transition: background 0.24s ease, backdrop-filter 0.24s ease;
+    transition: background 0.28s ease, backdrop-filter 0.28s ease;
 }
 
 .add-user-modal-overlay.open {
-    background: rgba(15, 23, 42, 0.48);
-    backdrop-filter: blur(3px);
+    background: rgba(7, 10, 16, 0.62);
+    backdrop-filter: blur(9px);
 }
 
 .add-user-modal-overlay.closing {
@@ -25,53 +25,64 @@
 .add-user-modal {
     width: 100%;
     max-width: 580px;
-    background: var(--aum-background);
+    background: linear-gradient(180deg, var(--aum-panel), var(--aum-surface));
     border-radius: var(--aum-radius-lg);
-    box-shadow: 0 22px 55px rgba(15, 23, 42, 0.2);
+    border: 1px solid var(--aum-border);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 22px 55px rgba(0, 0, 0, 0.34);
     overflow: hidden;
     opacity: 0;
-    transform: translateY(40px);
-    transition: transform 0.26s ease, opacity 0.26s ease;
+    transform: translateY(30px) scale(0.96);
+    transform-origin: center top;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .add-user-modal.open {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
 .add-user-modal.closing {
     opacity: 0;
-    transform: translateY(34px);
+    transform: translateY(18px) scale(0.975);
+}
+
+.add-user-modal [data-aum-motion-item] {
+    transform-origin: center top;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
 }
 
 .aum-header {
-    background: var(--aum-primary-dark);
-    color: var(--aum-white);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--aum-text);
     padding: 18px 20px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 14px;
+    border-bottom: 1px solid var(--aum-border);
 }
 
 .aum-header h2 {
     margin: 0;
     font-size: 22px;
     font-weight: 700;
-    color: var(--aum-white);
+    color: var(--aum-text);
 }
 
 .aum-header p {
     margin: 6px 0 0;
     font-size: 13px;
     line-height: 1.45;
-    color: rgba(255, 255, 255, 0.82);
+    color: var(--aum-text-muted);
 }
 
 .aum-close-btn {
-    border: none;
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--aum-white);
+    border: 1px solid var(--aum-border-hover);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--aum-text);
     width: 36px;
     height: 36px;
     border-radius: 999px;
@@ -83,7 +94,7 @@
 }
 
 .aum-close-btn:hover {
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
     transform: translateY(-1px);
 }
 
@@ -92,7 +103,7 @@
     flex-direction: column;
     gap: 18px;
     padding: 20px;
-    background: var(--aum-white);
+    background: transparent;
 }
 
 .aum-field {
@@ -104,7 +115,7 @@
 .aum-field label {
     font-size: 14px;
     font-weight: 700;
-    color: var(--aum-black);
+    color: var(--aum-text);
 }
 
 .aum-field input {
@@ -114,36 +125,38 @@
     padding: 12px 14px;
     font-size: 14px;
     outline: none;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.04);
     color: var(--aum-text);
     transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .aum-field input:focus {
     border-color: var(--aum-primary);
-    box-shadow: 0 0 0 3px rgba(33, 116, 255, 0.10);
+    box-shadow: 0 0 0 3px rgba(56, 139, 255, 0.1);
 }
 
 .aum-input-error {
-    border-color: #dc2626 !important;
-    background: rgba(254, 242, 242, 0.7);
+    border-color: var(--aum-danger) !important;
+    background: color-mix(in srgb, var(--aum-danger) 12%, transparent);
 }
 
 .aum-error {
     font-size: 12px;
     font-weight: 600;
-    color: #dc2626;
+    color: var(--aum-danger);
     margin-top: -2px;
 }
 
 .aum-submit-error {
     font-size: 13px;
     font-weight: 600;
-    color: #dc2626;
-    background: rgba(254, 242, 242, 0.9);
-    border: 1px solid rgba(220, 38, 38, 0.16);
+    color: var(--aum-danger);
+    background: color-mix(in srgb, var(--aum-danger) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--aum-danger) 24%, transparent);
     padding: 10px 12px;
     border-radius: 10px;
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--aum-danger) 10%, transparent);
+    animation: aum-inline-alert-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .aum-email-group {
@@ -152,14 +165,14 @@
     align-items: center;
     border: 1px solid var(--aum-border);
     border-radius: var(--aum-radius-md);
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.04);
     overflow: hidden;
     transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
 .aum-email-group:focus-within {
     border-color: var(--aum-primary);
-    box-shadow: 0 0 0 3px rgba(33, 116, 255, 0.10);
+    box-shadow: 0 0 0 3px rgba(56, 139, 255, 0.1);
 }
 
 .aum-email-group input {
@@ -172,8 +185,8 @@
 }
 
 .aum-email-group-error {
-    border-color: #dc2626 !important;
-    background: rgba(254, 242, 242, 0.7);
+    border-color: var(--aum-danger) !important;
+    background: color-mix(in srgb, var(--aum-danger) 12%, transparent);
     box-shadow: none !important;
 }
 
@@ -181,7 +194,7 @@
     padding: 0 14px 0 0;
     font-size: 14px;
     font-weight: 500;
-    color: rgba(15, 23, 42, 0.45);
+    color: color-mix(in srgb, var(--aum-text) 44%, transparent);
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
@@ -194,9 +207,9 @@
 }
 
 .aum-pill-btn {
-    border: 1.5px solid var(--aum-primary-dark);
-    background: var(--aum-white);
-    color: var(--aum-black);
+    border: 1px solid var(--aum-border-hover);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--aum-text);
     border-radius: 999px;
     padding: 10px 16px;
     font-size: 13px;
@@ -212,19 +225,52 @@
 }
 
 .aum-pill-btn.selected {
-    background: var(--aum-primary-dark);
-    color: var(--aum-white);
-    border-color: var(--aum-primary-dark);
+    background: linear-gradient(135deg, var(--aum-primary), var(--aum-primary-dark));
+    color: var(--aum-text);
+    border-color: color-mix(in srgb, var(--aum-primary) 24%, transparent);
+}
+
+.add-user-modal.mode-clean .aum-pill-group:not(.aum-status-pill-group) .aum-pill-btn,
+.add-user-modal.mode-ivory .aum-pill-group:not(.aum-status-pill-group) .aum-pill-btn {
+    color: var(--aum-text-muted);
+    border-color: color-mix(in srgb, var(--aum-text-muted) 34%, transparent);
+    background: color-mix(in srgb, var(--aum-panel) 88%, transparent);
+}
+
+.add-user-modal.mode-dark .aum-pill-group:not(.aum-status-pill-group) .aum-pill-btn {
+    color: var(--aum-text-muted);
+    border-color: color-mix(in srgb, var(--aum-border-hover) 72%, transparent);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.add-user-modal.mode-dark .aum-pill-group:not(.aum-status-pill-group) .aum-pill-btn.selected,
+.add-user-modal.mode-ivory .aum-pill-group:not(.aum-status-pill-group) .aum-pill-btn.selected,
+.add-user-modal.mode-clean .aum-pill-group:not(.aum-status-pill-group) .aum-pill-btn.selected {
+    background: var(--aum-pill-selected-bg);
+    color: var(--aum-pill-selected-text);
+    border-color: var(--aum-pill-selected-border);
+    box-shadow: none;
 }
 
 .aum-status-pill-group .aum-status-pill {
-    opacity: 0.5;
+    opacity: 1;
 }
 
 .aum-status-pill-group .aum-status-pill.selected {
-    opacity: 1;
     color: var(--aum-white);
     border-color: transparent;
+}
+
+.aum-status-pill-group .aum-status-active {
+    color: color-mix(in srgb, var(--aum-green) 72%, var(--aum-text-muted) 28%);
+    border-color: color-mix(in srgb, var(--aum-green) 42%, transparent);
+    background: color-mix(in srgb, var(--aum-green) 12%, transparent);
+}
+
+.aum-status-pill-group .aum-status-inactive {
+    color: color-mix(in srgb, var(--aum-danger) 72%, var(--aum-text-muted) 28%);
+    border-color: color-mix(in srgb, var(--aum-danger) 42%, transparent);
+    background: color-mix(in srgb, var(--aum-danger) 12%, transparent);
 }
 
 .aum-status-active.selected {
@@ -232,12 +278,12 @@
 }
 
 .aum-status-inactive.selected {
-    background: var(--aum-red-orange);
+    background: var(--aum-danger);
 }
 
 .aum-helper-text {
     font-size: 13px;
-    color: #6b7280;
+    color: var(--aum-text-muted);
     padding: 4px 2px;
 }
 
@@ -272,14 +318,14 @@
 }
 
 .aum-btn-cancel {
-    background: #eef2f7;
-    color: #334155;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--aum-text);
 }
 
 .aum-btn-save {
-    background: var(--aum-primary-dark);
+    background: linear-gradient(135deg, var(--aum-primary), var(--aum-primary-dark));
     color: #ffffff;
-    box-shadow: 0 10px 18px rgba(13, 78, 168, 0.18);
+    box-shadow: 0 10px 18px rgba(56, 139, 255, 0.18);
 }
 
 @media (max-width: 640px) {
@@ -311,5 +357,16 @@
 
     .aum-btn {
         width: 100%;
+    }
+}
+
+@keyframes aum-inline-alert-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }

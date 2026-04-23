@@ -1,0 +1,201 @@
+.user-tasks-page {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.user-tasks-header {
+    border: 1px solid var(--user-border);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--user-surface) 92%, white);
+    padding: 18px;
+}
+
+.user-tasks-header span {
+    display: inline-flex;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--user-primary) 10%, white);
+    color: var(--user-primary-dark);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.user-tasks-header h1 {
+    margin: 12px 0 8px;
+    font-size: clamp(1.45rem, 2.5vw, 2rem);
+    color: var(--user-primary-dark);
+}
+
+.user-tasks-header p {
+    margin: 0;
+    color: var(--user-text-muted);
+    line-height: 1.6;
+    max-width: 720px;
+}
+
+.user-tasks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.user-task-card {
+    display: grid;
+    gap: 14px;
+    border: 1px solid var(--user-border);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--user-panel) 72%, var(--user-surface) 28%);
+    padding: 18px;
+}
+
+.user-task-card-top,
+.user-task-card-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.user-task-card-tag,
+.user-task-card-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.user-task-card-tag {
+    background: color-mix(in srgb, var(--user-primary) 10%, white);
+    color: var(--user-primary-dark);
+}
+
+.user-task-card-pill {
+    border: 1px solid color-mix(in srgb, #f59e0b 28%, var(--user-border));
+    background: color-mix(in srgb, #f59e0b 14%, white);
+    color: color-mix(in srgb, #92400e 80%, var(--user-text) 20%);
+    white-space: nowrap;
+}
+
+.user-task-card h2 {
+    margin: 10px 0 0;
+    font-size: 18px;
+    color: var(--user-text);
+}
+
+.user-task-card-meta,
+.user-task-card-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.user-task-card-meta div,
+.user-task-card-summary div {
+    display: grid;
+    gap: 5px;
+}
+
+.user-task-card-meta span,
+.user-task-card-summary span {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--user-text-muted);
+}
+
+.user-task-card-meta strong,
+.user-task-card-summary strong {
+    font-size: 14px;
+    color: var(--user-text);
+}
+
+.user-task-btn {
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: 10px;
+    border: 1px solid var(--user-border);
+    background: transparent;
+    color: var(--user-text);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.user-task-btn--ghost {
+    color: color-mix(in srgb, #ef4444 78%, var(--user-text) 22%);
+    border-color: color-mix(in srgb, #ef4444 28%, var(--user-border));
+}
+
+.user-task-btn--ghost:hover {
+    background: color-mix(in srgb, #ef4444 12%, transparent);
+}
+
+.user-task-btn--primary {
+    background: var(--user-primary);
+    border-color: var(--user-primary);
+    color: white;
+}
+
+.user-task-btn--primary:hover {
+    background: var(--user-primary-dark);
+    border-color: var(--user-primary-dark);
+}
+
+.user-task-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.user-task-inline-error,
+.user-tasks-empty {
+    border: 1px solid var(--user-border);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--user-surface) 94%, white);
+    padding: 16px;
+    color: var(--user-text-muted);
+    animation: user-task-alert-in 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.user-task-inline-error,
+.user-tasks-empty--error {
+    border-color: color-mix(in srgb, #ef4444 28%, var(--user-border));
+    background: color-mix(in srgb, #ef4444 8%, white);
+    color: color-mix(in srgb, #ef4444 78%, var(--user-text) 22%);
+}
+
+.user-tasks-empty p {
+    margin: 0;
+}
+
+@keyframes user-task-alert-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 980px) {
+    .user-tasks-grid,
+    .user-task-card-meta,
+    .user-task-card-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .user-task-card-top,
+    .user-task-card-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

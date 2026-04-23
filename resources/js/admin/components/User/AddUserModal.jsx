@@ -1,6 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "../../../../css/admin/add-user-modal.css";
 import { theme } from "../../../../utils/theme";
+import { useAdminTheme } from "../../context/AdminThemeContext";
+import { animateStaggerReveal, cleanupMotion } from "../../../user/utils/animeMotion";
 
 const INSTITUTIONAL_DOMAIN = "@smcbi.edu.ph";
 
@@ -14,8 +16,40 @@ function AddUserModal({
     submitting = false,
     initialData = null,
 }) {
+    const { activeTheme, themeMode } = useAdminTheme();
+    const activeColors = activeTheme.colors;
+
+    const dangerPalette = {
+        dark: "#dc2626",
+        ivory: "#bf2e24",
+        clean: "#c7342f",
+    };
+
+    const modalDanger = dangerPalette[themeMode] || dangerPalette.dark;
+    const selectedPillPalette = {
+        dark: {
+            bg: activeColors.primary,
+            text: activeColors.black,
+            border: activeColors.primaryDark,
+        },
+        ivory: {
+            bg: activeColors.primary,
+            text: activeColors.white,
+            border: activeColors.primaryDark,
+        },
+        clean: {
+            bg: activeColors.primary,
+            text: activeColors.white,
+            border: activeColors.primaryDark,
+        },
+    };
+
+    const selectedPillColors =
+        selectedPillPalette[themeMode] || selectedPillPalette.dark;
+
     const [isMounted, setIsMounted] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    const modalRef = useRef(null);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -93,6 +127,27 @@ function AddUserModal({
             return () => clearTimeout(timer);
         }
     }, [isOpen, initialData, departments, isMounted]);
+
+    useEffect(() => {
+        if (!isVisible) {
+            return undefined;
+        }
+
+        const motion = animateStaggerReveal(modalRef.current, {
+            selector: "[data-aum-motion-item]",
+            duration: 500,
+            staggerMs: 34,
+            startDelayMs: 0,
+        });
+
+        if (!motion) {
+            return undefined;
+        }
+
+        return () => {
+            cleanupMotion(motion);
+        };
+    }, [isVisible, mode, departments.length, loadingDepartments, submitError]);
 
     const closeWithAnimation = () => {
         setIsVisible(false);
@@ -220,20 +275,29 @@ function AddUserModal({
     };
 
     const modalStyle = {
-        "--aum-primary-dark": theme.colors.primaryDark || "#0d4ea8",
-        "--aum-primary": theme.colors.primary,
-        "--aum-border": theme.colors.border,
-        "--aum-white": theme.colors.white,
-        "--aum-text": theme.colors.text,
-        "--aum-accent": theme.colors.accent,
-        "--aum-background": theme.colors.background,
-        "--aum-black": theme.colors.black,
-        "--aum-green": theme.colors.status.signed,
-        "--aum-red-orange": theme.colors.accent,
+        "--aum-primary-dark": activeColors.primaryDark,
+        "--aum-primary": activeColors.primary,
+        "--aum-border": activeColors.border,
+        "--aum-border-hover": activeColors.borderHover,
+        "--aum-white": activeColors.white,
+        "--aum-text": activeColors.text,
+        "--aum-text-muted": activeColors.textMuted,
+        "--aum-accent": activeColors.accent,
+        "--aum-background": activeColors.background,
+        "--aum-surface": activeColors.surface,
+        "--aum-panel": activeColors.panel,
+        "--aum-card": activeColors.card,
+        "--aum-hint": activeColors.hint,
+        "--aum-black": activeColors.black,
+        "--aum-green": activeColors.status.signed,
+        "--aum-danger": modalDanger,
+        "--aum-pill-selected-bg": selectedPillColors.bg,
+        "--aum-pill-selected-text": selectedPillColors.text,
+        "--aum-pill-selected-border": selectedPillColors.border,
         "--aum-font": theme.fonts.primary,
         "--aum-radius-md": theme.radius.md,
         "--aum-radius-lg": theme.radius.lg,
-        "--aum-shadow": theme.shadows.card,
+        "--aum-shadow": activeTheme.shadows.card,
     };
 
     if (!isMounted) {
@@ -246,8 +310,11 @@ function AddUserModal({
             style={modalStyle}
             onClick={handleOverlayClick}
         >
-            <div className={`add-user-modal ${isVisible ? "open" : "closing"}`}>
-                <div className="aum-header">
+            <div
+                ref={modalRef}
+                className={`add-user-modal mode-${themeMode} ${isVisible ? "open" : "closing"}`}
+            >
+                <div className="aum-header" data-aum-motion-item>
                     <div>
                         <h2>{modalTitle}</h2>
                         <p>{modalSubtitle}</p>
@@ -265,7 +332,7 @@ function AddUserModal({
                 </div>
 
                 <form className="aum-form" onSubmit={handleSubmit}>
-                    <div className="aum-field">
+                    <div className="aum-field" data-aum-motion-item>
                         <label htmlFor="aum-name">Full Name</label>
                         {errors.name && <span className="aum-error">{errors.name}</span>}
                         <input
@@ -280,7 +347,7 @@ function AddUserModal({
                         />
                     </div>
 
-                    <div className="aum-field">
+                    <div className="aum-field" data-aum-motion-item>
                         <label htmlFor="aum-email">Email</label>
                         {errors.email && <span className="aum-error">{errors.email}</span>}
 
@@ -305,7 +372,7 @@ function AddUserModal({
                         </div>
                     </div>
 
-                    <div className="aum-field">
+                    <div className="aum-field" data-aum-motion-item>
                         <label>Role</label>
                         {errors.role && <span className="aum-error">{errors.role}</span>}
                         <div className="aum-pill-group">
@@ -329,7 +396,7 @@ function AddUserModal({
                         </div>
                     </div>
 
-                    <div className="aum-field">
+                    <div className="aum-field" data-aum-motion-item>
                         <label>Department</label>
                         {errors.department_id && (
                             <span className="aum-error">{errors.department_id}</span>
@@ -371,7 +438,7 @@ function AddUserModal({
                         </div>
                     </div>
 
-                    <div className="aum-field">
+                    <div className="aum-field" data-aum-motion-item>
                         <label>Status</label>
                         {errors.status && <span className="aum-error">{errors.status}</span>}
 
@@ -400,9 +467,9 @@ function AddUserModal({
                         </div>
                     </div>
 
-                    {submitError && <span className="aum-submit-error">{submitError}</span>}
+                    {submitError && <span className="aum-submit-error" data-aum-motion-item>{submitError}</span>}
 
-                    <div className="aum-actions">
+                    <div className="aum-actions" data-aum-motion-item>
                         <button
                             type="button"
                             className="aum-btn aum-btn-cancel"

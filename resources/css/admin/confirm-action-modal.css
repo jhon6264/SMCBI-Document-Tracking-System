@@ -9,12 +9,12 @@
     padding: 20px;
     z-index: 10000;
     font-family: var(--cam-font);
-    transition: background 0.22s ease, backdrop-filter 0.22s ease;
+    transition: background 0.26s ease, backdrop-filter 0.26s ease;
 }
 
 .confirm-action-overlay.open {
-    background: rgba(15, 23, 42, 0.42);
-    backdrop-filter: blur(2px);
+    background: rgba(7, 10, 16, 0.58);
+    backdrop-filter: blur(9px);
 }
 
 .confirm-action-overlay.closing {
@@ -25,23 +25,33 @@
 .confirm-action-modal {
     width: 100%;
     max-width: 420px;
-    background: var(--cam-white);
+    background: linear-gradient(180deg, var(--cam-panel), var(--cam-surface));
     border-radius: var(--cam-radius-lg);
-    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+    border: 1px solid var(--cam-border);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 20px 50px rgba(0, 0, 0, 0.34);
     overflow: hidden;
     opacity: 0;
-    transform: translateY(24px);
-    transition: transform 0.22s ease, opacity 0.22s ease;
+    transform: translateY(24px) scale(0.96);
+    transform-origin: center top;
+    transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.26s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .confirm-action-modal.open {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
 .confirm-action-modal.closing {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(14px) scale(0.975);
+}
+
+.confirm-action-modal [data-cam-motion-item] {
+    transform-origin: center top;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
 }
 
 .cam-header {
@@ -50,8 +60,17 @@
     justify-content: space-between;
     gap: 12px;
     padding: 18px 18px 14px;
-    border-bottom: 1px solid #eef2f7;
-    background: var(--cam-white);
+    border-bottom: 1px solid var(--cam-border);
+    background: var(--cam-panel);
+}
+
+.confirm-action-modal.variant-delete .cam-header h3,
+.confirm-action-modal.variant-disable .cam-header h3 {
+    color: var(--cam-danger);
+}
+
+.confirm-action-modal.variant-success .cam-header h3 {
+    color: var(--cam-green);
 }
 
 .cam-header h3 {
@@ -62,20 +81,33 @@
 }
 
 .cam-close-btn {
-    border: none;
+    border: 1px solid var(--cam-border-hover);
     width: 34px;
     height: 34px;
     border-radius: 999px;
-    background: #f8fafc;
-    color: #334155;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--cam-text);
     font-size: 21px;
     line-height: 1;
     cursor: pointer;
     transition: background 0.2s ease, transform 0.2s ease;
 }
 
+.confirm-action-modal.variant-delete .cam-close-btn,
+.confirm-action-modal.variant-disable .cam-close-btn {
+    border-color: color-mix(in srgb, var(--cam-danger) 38%, transparent);
+    background: color-mix(in srgb, var(--cam-danger) 12%, transparent);
+    color: var(--cam-danger);
+}
+
+.confirm-action-modal.variant-success .cam-close-btn {
+    border-color: color-mix(in srgb, var(--cam-green) 38%, transparent);
+    background: color-mix(in srgb, var(--cam-green) 12%, transparent);
+    color: var(--cam-green);
+}
+
 .cam-close-btn:hover {
-    background: #eef2f7;
+    background: rgba(255, 255, 255, 0.08);
     transform: translateY(-1px);
 }
 
@@ -87,7 +119,16 @@
     margin: 0;
     font-size: 14px;
     line-height: 1.65;
-    color: #475569;
+    color: var(--cam-text-muted);
+}
+
+.cam-highlight-name {
+    color: var(--cam-danger);
+    font-weight: 700;
+}
+
+.cam-highlight-name-success {
+    color: var(--cam-green);
 }
 
 .cam-actions {
@@ -119,14 +160,15 @@
 }
 
 .cam-btn-cancel {
-    background: #eef2f7;
-    color: #334155;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--cam-text);
 }
 
-.cam-btn-danger {
-    background: var(--cam-accent);
+.cam-btn-delete,
+.cam-btn-disable {
+    background: var(--cam-danger);
     color: var(--cam-white);
-    box-shadow: 0 10px 18px rgba(232, 82, 35, 0.18);
+    box-shadow: 0 10px 18px color-mix(in srgb, var(--cam-danger) 34%, transparent);
 }
 
 .cam-btn-success {

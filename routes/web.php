@@ -6,14 +6,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/dashboard', function () {
+Route::get('/admin/{path?}', function () {
     return view('welcome');
-});
+})->where('path', '.*');
 
-Route::get('/admin/admin-management', function () {
+Route::get('/user/{path?}', function () {
     return view('welcome');
-});
-
-Route::get('/admin/user-management', function () {
-    return view('welcome');
-});
+})->where('path', '.*');

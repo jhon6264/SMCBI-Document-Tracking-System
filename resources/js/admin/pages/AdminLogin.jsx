@@ -1,32 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "../../../css/admin/admin-login.css";
-import { theme } from "../../../utils/theme";
-import LoginAnimation from "../../assets/lottie/Login.json";
-import Lottie from "lottie-react";
-import { FaEyeSlash, FaRegEye } from "react-icons/fa";
+import { defaultThemeMode, theme, themeModes } from "../../../utils/theme";
+import GoogleLabel from "../../assets/images/google_Label.png";
+import { IoIosColorPalette } from "react-icons/io";
+
+const THEME_STORAGE_KEY = "doc_track_theme_mode";
+const THEME_OPTIONS = ["dark", "ivory", "clean"];
 
 function AdminLogin() {
+    const themePickerRef = useRef(null);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-
-    const [cardVisible, setCardVisible] = useState(false);
-    const [contentVisible, setContentVisible] = useState(false);
-    const [isExiting, setIsExiting] = useState(false);
-
+    const [pageReady, setPageReady] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
+    const [themeMode, setThemeMode] = useState(() => {
+        const savedMode = localStorage.getItem(THEME_STORAGE_KEY);
+        return savedMode && themeModes[savedMode] ? savedMode : defaultThemeMode;
+    });
+
+    const activeTheme = themeModes[themeMode] || themeModes[defaultThemeMode];
+    const activeColors = activeTheme.colors;
 
     useEffect(() => {
-        const enterTimer = setTimeout(() => setCardVisible(true), 60);
-        const contentTimer = setTimeout(() => setContentVisible(true), 360);
-
-        return () => {
-            clearTimeout(enterTimer);
-            clearTimeout(contentTimer);
-        };
+        const timer = setTimeout(() => setPageReady(true), 80);
+        return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem(THEME_STORAGE_KEY, themeMode);
+    }, [themeMode]);
+
+    useEffect(() => {
+        if (!isThemeMenuOpen) {
+            return;
+        }
+
+        const handleOutsideClick = (event) => {
+            if (!themePickerRef.current?.contains(event.target)) {
+                setIsThemeMenuOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, [isThemeMenuOpen]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -59,20 +81,10 @@ function AdminLogin() {
             localStorage.setItem("admin_token", data.token);
             localStorage.setItem("admin_data", JSON.stringify(data.admin));
 
-            setContentVisible(false);
-
-            setTimeout(() => {
-                setIsExiting(true);
-            }, 250);
-
-            setTimeout(() => {
-                window.location.href = "/admin/dashboard";
-            }, 950);
+            window.location.href = "/admin/dashboard";
         } catch (error) {
-            if (error.response && error.response.data) {
-                setErrorMessage(
-                    error.response.data.message || "Login failed. Please try again."
-                );
+            if (error.response?.data?.message) {
+                setErrorMessage(error.response.data.message);
             } else {
                 setErrorMessage("Unable to connect to the server.");
             }
@@ -82,68 +94,51 @@ function AdminLogin() {
     };
 
     const pageStyle = {
-        "--bg-color": theme.colors.primary,
-        "--card-color": theme.colors.white,
-        "--text-color": theme.colors.text,
-        "--border-color": "#000000",
-        "--accent-color": theme.colors.accent,
-        "--font-primary": theme.fonts.primary,
-        "--input-color": "#000000",
-        "--bubble-accent": theme.colors.accent,
-        "--bubble-pending": theme.colors.status.pending,
-        "--bubble-opened": theme.colors.status.opened,
-        "--bubble-signed": theme.colors.status.signed,
+        "--admin-bg": activeColors.background,
+        "--admin-primary": activeColors.primary,
+        "--admin-primary-dark": activeColors.primaryDark,
+        "--admin-accent": activeColors.accent,
+        "--admin-text": activeColors.text,
+        "--admin-text-muted": activeColors.textMuted,
+        "--admin-border": activeColors.border,
+        "--admin-white": activeColors.white,
+        "--admin-font": theme.fonts.primary,
+        "--admin-surface": activeColors.surface,
+        "--admin-panel": activeColors.panel,
+        "--admin-card": activeColors.card,
+        "--admin-hint": activeColors.hint,
+        "--admin-border-hover": activeColors.borderHover,
+        "--admin-blue-tint": activeColors.blueTint,
+        "--admin-teal-tint": activeColors.tealTint,
     };
 
     return (
-        <div className="admin-login-page" style={pageStyle}>
-            <div className="bubble bubble-1" />
-            <div className="bubble bubble-2" />
-            <div className="bubble bubble-3" />
-            <div className="bubble bubble-4" />
-            <div className="bubble bubble-5" />
-            <div className="bubble bubble-6" />
-            <div className="bubble bubble-7" />
-            <div className="bubble bubble-8" />
-            <div className="bubble bubble-9" />
-            <div className="bubble bubble-10" />
-            <div className="bubble bubble-11" />
-            <div className="bubble bubble-12" />
-            <div className="bubble bubble-13" />
-            <div className="bubble bubble-14" />
-            <div className="bubble bubble-15" />
+        <div className={`admin-login-page mode-${themeMode}`} style={pageStyle}>
+            <div className="admin-login-glow glow-left" />
+            <div className="admin-login-glow glow-right" />
 
-            <div
-                className={[
-                    "admin-login-card",
-                    cardVisible ? "enter" : "",
-                    isExiting ? "exit" : "",
-                ].join(" ")}
-            >
-                <div
-                    className={[
-                        "admin-login-content",
-                        contentVisible ? "content-show" : "",
-                        isExiting ? "content-hide" : "",
-                    ].join(" ")}
-                >
-                    <div className="admin-login-left">
-                        <Lottie
-                            animationData={LoginAnimation}
-                            loop
-                            autoplay
-                            className="admin-login-lottie"
-                        />
+            <div className={`admin-login-shell ${pageReady ? "is-ready" : ""}`}>
+                <section className="admin-login-showcase">
+                    <div className="admin-login-copy">
+                        <h2>
+                            Admin
+                            <span> Workspace</span>
+                        </h2>
                     </div>
 
-                    <div className="admin-login-right">
-                        <div className="admin-login-header">
-                            <h1>Admin Login</h1>
-                            <p>Sign in to manage the document tracking system.</p>
-                        </div>
+                    <div className="admin-login-security">
+                        <span>Secured by</span>
+                        <img src={GoogleLabel} alt="Google" className="admin-login-security-badge" />
+                    </div>
+                </section>
+
+                <section className="admin-login-panel">
+                    <div className="admin-login-panel-inner">
+                        <h2>Welcome back</h2>
+                        <p>Enter your admin credentials to continue to the dashboard.</p>
 
                         <form className="admin-login-form" onSubmit={handleSubmit}>
-                            <div className={`floating-field ${email ? "has-value" : ""}`}>
+                            <div className={`admin-field ${email ? "has-value" : ""}`}>
                                 <input
                                     type="email"
                                     id="admin-email"
@@ -155,16 +150,12 @@ function AdminLogin() {
                                     required
                                     disabled={loading}
                                 />
-                                <label htmlFor="admin-email">Email</label>
+                                <label htmlFor="admin-email">Admin Email</label>
                             </div>
 
-                            <div
-                                className={`floating-field password-field ${
-                                    password ? "has-value" : ""
-                                }`}
-                            >
+                            <div className={`admin-field admin-password ${password ? "has-value" : ""}`}>
                                 <input
-                                    type={showPassword ? "text" : "password"}
+                                    type="password"
                                     id="admin-password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -173,29 +164,10 @@ function AdminLogin() {
                                     disabled={loading}
                                 />
                                 <label htmlFor="admin-password">Password</label>
-
-                                <button
-                                    type="button"
-                                    className="password-toggle"
-                                    onClick={() => setShowPassword((prev) => !prev)}
-                                    aria-label={showPassword ? "Hide password" : "Show password"}
-                                    disabled={loading}
-                                >
-                                    {showPassword ? <FaEyeSlash /> : <FaRegEye />}
-                                </button>
                             </div>
 
                             {errorMessage && (
-                                <p
-                                    style={{
-                                        color: "red",
-                                        fontSize: "14px",
-                                        marginTop: "8px",
-                                        marginBottom: "8px",
-                                    }}
-                                >
-                                    {errorMessage}
-                                </p>
+                                <div className="admin-login-status error">{errorMessage}</div>
                             )}
 
                             <button
@@ -203,10 +175,40 @@ function AdminLogin() {
                                 className="admin-login-button"
                                 disabled={loading}
                             >
-                                {loading ? "Logging in..." : "Login"}
+                                {loading ? "Signing in..." : "Sign In"}
                             </button>
                         </form>
                     </div>
+                </section>
+            </div>
+
+            <div className="admin-theme-picker" ref={themePickerRef}>
+                <button
+                    type="button"
+                    className={`admin-theme-trigger ${isThemeMenuOpen ? "open" : ""}`}
+                    onClick={() => setIsThemeMenuOpen((prev) => !prev)}
+                    aria-label="Choose theme mode"
+                    title="Choose theme mode"
+                >
+                    <IoIosColorPalette />
+                </button>
+
+                <div className={`admin-theme-menu ${isThemeMenuOpen ? "open" : ""}`}>
+                    {THEME_OPTIONS.map((mode) => (
+                        <button
+                            key={mode}
+                            type="button"
+                            className={`admin-theme-swatch ${mode} ${
+                                themeMode === mode ? "active" : ""
+                            }`}
+                            onClick={() => {
+                                setThemeMode(mode);
+                                setIsThemeMenuOpen(false);
+                            }}
+                            title={`${mode} mode`}
+                            aria-label={`Use ${mode} mode`}
+                        />
+                    ))}
                 </div>
             </div>
         </div>

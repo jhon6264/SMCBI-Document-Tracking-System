@@ -1,0 +1,1336 @@
+/*
+ * user-google-drive.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * ALL colours are hardcoded Google Drive values.
+ * This file is intentionally isolated from the app's theme system
+ * (Clean / Dark / any other colour-mode).  Do NOT replace hex values with
+ * CSS custom-property references from the parent layout.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+/* ── Design tokens (scoped to .gdrive-workspace only) ──────────────────────── */
+.gdrive-workspace {
+    --gd-blue:         var(--user-primary, #2F61C9);
+    --gd-blue-dark:    var(--user-primary-dark, #183B8C);
+    --gd-accent:       var(--user-accent, #1B8F6A);
+    --gd-blue-soft:    color-mix(in srgb, var(--gd-blue) 22%, transparent);
+    --gd-blue-xsoft:   color-mix(in srgb, var(--gd-blue) 10%, transparent);
+
+    --gd-bg:           var(--user-bg, #FAFCFF);
+    --gd-surface:      var(--user-surface, #FFFFFF);
+    --gd-toolbar-bg:   color-mix(in srgb, var(--user-panel, #ECF2FF) 80%, var(--user-surface, #FFFFFF) 20%);
+    --gd-sidebar-bg:   color-mix(in srgb, var(--user-panel, #ECF2FF) 92%, var(--user-bg, #FAFCFF) 8%);
+    --gd-border:       var(--user-border, rgba(13,26,50,0.14));
+    --gd-border-soft:  color-mix(in srgb, var(--gd-border) 65%, transparent);
+
+    --gd-text:         var(--user-text, #0D1A32);
+    --gd-muted:        var(--user-text-muted, rgba(13,26,50,0.68));
+    --gd-scroll-thumb: color-mix(in srgb, var(--gd-blue) 42%, transparent);
+    --gd-scroll-track: color-mix(in srgb, var(--gd-border) 42%, transparent);
+    --gd-skeleton-base: color-mix(in srgb, var(--gd-blue) 14%, var(--gd-surface) 86%);
+    --gd-skeleton-highlight: color-mix(in srgb, var(--gd-blue) 26%, var(--gd-surface) 74%);
+    --gd-skeleton-edge: color-mix(in srgb, var(--gd-blue) 18%, var(--gd-surface) 82%);
+
+    --gd-green:        #34a853;
+    --gd-red:          #ea4335;
+    --gd-yellow:       #fbbc05;
+
+    font-family: "Google Sans", "Roboto", "Segoe UI", Arial, sans-serif !important;
+    color: var(--gd-text) !important;
+
+    background:    var(--gd-bg);
+    border:        1.5px solid var(--gd-border);
+    border-radius: 18px;
+    box-shadow:    0 4px 24px rgba(26, 115, 232, 0.10),
+                   0 1px 6px  rgba(0, 0, 0, 0.06);
+
+    /* ── FIX 2: increased height ── */
+    height:     clamp(680px, calc(100vh - 80px), 980px);
+    overflow:   hidden;
+
+    display:               grid;
+    grid-template-rows:    auto minmax(0, 1fr) auto;
+    animation: gdrive-page-in 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gdrive-workspace * {
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.gdrive-workspace [data-gd-layout-item],
+.gdrive-workspace [data-gd-result-item],
+.gdrive-workspace [data-gd-empty-state],
+.gdrive-workspace [data-gd-skeleton-item],
+.gdrive-preview-modal [data-gd-preview-item],
+.gdrive-dialog [data-gd-dialog-item] {
+    transform-origin: center top;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   TOOLBAR
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-toolbar {
+    display:               grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap:                   12px;
+    align-items:           center;
+    padding:               10px 16px;
+    background:            var(--gd-toolbar-bg);
+    border-bottom:         1.5px solid var(--gd-border);
+    animation: gdrive-page-head-in 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gdrive-brand {
+    display:     flex;
+    align-items: center;
+    gap:         8px;
+}
+.gdrive-brand-logo {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+.gdrive-brand strong {
+    font-size:   20px;
+    font-weight: 700;
+    color:       var(--gd-blue);
+    letter-spacing: -0.3px;
+}
+
+.gdrive-search-wrap {
+    position:      relative;
+    display:       flex;
+    align-items:   center;
+    background:    var(--gd-blue-xsoft);
+    border:        1.5px solid transparent;
+    border-radius: 24px;
+    padding:       0 14px;
+    height:        44px;
+    gap:           8px;
+    min-width:     0;
+    transition:    border-color 0.18s, background 0.18s;
+}
+.gdrive-search-wrap:focus-within {
+    border-color: var(--gd-blue);
+    background:   var(--gd-surface);
+}
+.gdrive-search-icon {
+    color:       var(--gd-muted);
+    flex-shrink: 0;
+}
+.gdrive-search {
+    flex:       1;
+    border:     none;
+    background: transparent;
+    outline:    none;
+    font-size:  15px;
+    color:      var(--gd-text);
+}
+.gdrive-search::placeholder { color: var(--gd-muted); }
+.gdrive-search:disabled     { cursor: not-allowed; opacity: 0.6; }
+
+.gdrive-search-clear-btn {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    width:           24px;
+    height:          24px;
+    border:          none;
+    background:      transparent;
+    color:           var(--gd-muted);
+    border-radius:   50%;
+    cursor:          pointer;
+    flex-shrink:     0;
+}
+.gdrive-search-clear-btn:hover {
+    color: var(--gd-text);
+    background: color-mix(in srgb, var(--gd-blue) 16%, transparent);
+}
+
+.gdrive-search-suggestions {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 8px);
+    z-index: 40;
+    display: grid;
+    gap: 2px;
+    max-height: 280px;
+    overflow-y: auto;
+    background: var(--gd-surface);
+    border: 1.5px solid var(--gd-border);
+    border-radius: 14px;
+    padding: 6px;
+    box-shadow: 0 18px 40px rgba(13, 26, 50, 0.18);
+    scrollbar-width: thin;
+    scrollbar-color: var(--gd-scroll-thumb) var(--gd-scroll-track);
+}
+.gdrive-search-suggestions::-webkit-scrollbar {
+    width: 10px;
+}
+.gdrive-search-suggestions::-webkit-scrollbar-track {
+    background: var(--gd-scroll-track);
+    border-radius: 999px;
+}
+.gdrive-search-suggestions::-webkit-scrollbar-thumb {
+    background: var(--gd-scroll-thumb);
+    border-radius: 999px;
+    border: 2px solid color-mix(in srgb, var(--gd-surface) 88%, var(--gd-toolbar-bg) 12%);
+}
+.gdrive-search-suggestions::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--gd-blue) 58%, transparent);
+}
+
+.gdrive-search-suggestion-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--gd-text);
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+.gdrive-search-suggestion-item:hover {
+    background: var(--gd-blue-xsoft);
+}
+
+.gdrive-toolbar-actions {
+    display:     flex;
+    align-items: center;
+    gap:         8px;
+    flex-wrap:   wrap;
+    justify-self: end;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   SHARED BUTTON BASE
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-btn {
+    display:         inline-flex;
+    align-items:     center;
+    gap:             6px;
+    padding:         8px 14px;
+    border:          1.5px solid var(--gd-border);
+    border-radius:   20px;
+    background:      var(--gd-surface);
+    color:           var(--gd-text);
+    font-size:       13px;
+    font-weight:     600;
+    cursor:          pointer;
+    text-decoration: none;
+    white-space:     nowrap;
+    transition:      background 0.15s, border-color 0.15s;
+}
+.gdrive-btn:hover:not(:disabled) {
+    background:   var(--gd-blue-xsoft);
+    border-color: var(--gd-blue);
+    color:        var(--gd-blue-dark);
+}
+.gdrive-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.gdrive-btn--connect {
+    background:   var(--gd-blue);
+    border-color: var(--gd-blue);
+    color:        #fff;
+}
+.gdrive-btn--connect:hover:not(:disabled) {
+    background:   var(--gd-blue-dark);
+    border-color: var(--gd-blue-dark);
+    color:        #fff;
+}
+
+.gdrive-connected-wrap {
+    position: relative;
+}
+
+.gdrive-connected-pill {
+    border-color: color-mix(in srgb, var(--gd-blue) 24%, var(--gd-border));
+    background: var(--gd-surface);
+    color: var(--gd-text);
+}
+.gdrive-connected-pill:hover:not(:disabled) {
+    background: var(--gd-blue-xsoft);
+    border-color: var(--gd-blue);
+    color: var(--gd-blue-dark);
+}
+
+.gdrive-connected-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.gdrive-connected-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--gd-border-soft);
+    flex-shrink: 0;
+}
+
+.gdrive-connected-avatar--fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--gd-blue) 22%, transparent);
+    color: var(--gd-blue-dark);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.gdrive-connected-text {
+    display: inline-flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.1;
+}
+
+.gdrive-connected-text strong {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.gdrive-connected-text small {
+    font-size: 10px;
+    opacity: 0.82;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+.gdrive-account-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 180px;
+    z-index: 45;
+    background: var(--gd-surface);
+    border: 1.5px solid var(--gd-border);
+    border-radius: 12px;
+    box-shadow: 0 16px 34px rgba(13, 26, 50, 0.16);
+    padding: 6px;
+}
+
+.gdrive-account-menu-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--gd-text);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+.gdrive-account-menu-item:hover:not(:disabled) {
+    background: var(--gd-blue-xsoft);
+}
+.gdrive-account-menu-item:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.gdrive-account-menu-item--danger {
+    color: #b91c1c;
+}
+.gdrive-account-menu-item--danger:hover:not(:disabled) {
+    background: #fee2e2;
+}
+
+.gdrive-btn--danger {
+    border-color: #fca5a5;
+    background: #fee2e2;
+    color: #991b1b;
+}
+.gdrive-btn--danger:hover:not(:disabled) {
+    border-color: #ef4444;
+    background: #fecaca;
+    color: #7f1d1d;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   EXPLORER
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-explorer {
+    display:               grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    min-height:            0;
+}
+
+/* ── Sidebar ── */
+.gdrive-sidebar {
+    display:        flex;
+    flex-direction: column;
+    gap:            6px;
+    padding:        12px 10px;
+    background:     var(--gd-sidebar-bg);
+    border-right:   1.5px solid var(--gd-border);
+    overflow-y:     auto;
+    min-height:     0;
+    animation: gdrive-page-panel-in 1000ms 90ms both cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gdrive-new-btn {
+    display:       inline-flex;
+    align-items:   center;
+    gap:           10px;
+    padding:       11px 14px;
+    border:        none;
+    border-radius: 8px;
+    background:    var(--gd-surface);
+    color:         #1f4fa3;
+    font-size:     14px;
+    font-weight:   700;
+    cursor:        pointer;
+    transition:    transform 0.15s, box-shadow 0.15s, background 0.15s;
+    white-space:   nowrap;
+    box-shadow:    0 2px 8px rgba(15, 23, 42, 0.12);
+}
+.gdrive-new-btn:hover {
+    background: #f7fbff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
+}
+.gdrive-new-btn--secondary {
+    color: #1f4fa3;
+}
+
+.gdrive-nav {
+    display:        flex;
+    flex-direction: column;
+    gap:            2px;
+    margin-top:     8px;
+}
+.gdrive-nav-item {
+    display:       inline-flex;
+    align-items:   center;
+    gap:           10px;
+    padding:       9px 12px;
+    border:        1.5px solid transparent;
+    border-radius: 999px;
+    background:    transparent;
+    color:         var(--gd-muted);
+    font-size:     14px;
+    font-weight:   500;
+    text-align:    left;
+    cursor:        pointer;
+    transition:    background 0.15s, color 0.15s;
+    white-space:   nowrap;
+}
+.gdrive-nav-item:hover {
+    background:   color-mix(in srgb, var(--gd-blue) 12%, transparent);
+    border-color: color-mix(in srgb, var(--gd-blue) 20%, transparent);
+    color:        var(--gd-text);
+}
+.gdrive-nav-item.active {
+    background:   var(--gd-blue-soft);
+    border-color: #aac4f5;
+    color:        var(--gd-blue-dark);
+}
+
+/* ── Content area ── */
+.gdrive-content {
+    display:             grid;
+    grid-template-rows:  auto minmax(0, 1fr);
+    background:          var(--gd-surface);
+    min-height:          0;
+    min-width:           0;
+    animation: gdrive-page-panel-in 1000ms 150ms both cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gdrive-content-head {
+    display:         flex;
+    align-items:     flex-start;
+    justify-content: space-between;
+    gap:             10px;
+    flex-wrap:       wrap;
+    padding:         14px 18px 10px;
+    border-bottom:   1.5px solid var(--gd-border-soft);
+}
+
+.gdrive-title-stack h2 {
+    margin:      0;
+    font-size:   22px;
+    font-weight: 500;
+    color:       var(--gd-text);
+}
+
+.gdrive-breadcrumbs {
+    margin-top:  5px;
+    display:     flex;
+    align-items: center;
+    gap:         4px;
+    flex-wrap:   wrap;
+}
+.gdrive-breadcrumbs button {
+    border:      none;
+    background:  transparent;
+    color:       var(--gd-blue);
+    font-size:   13px;
+    font-weight: 600;
+    padding:     0;
+    cursor:      pointer;
+}
+.gdrive-breadcrumbs button:hover { text-decoration: underline; }
+.gdrive-breadcrumb-sep {
+    color:       var(--gd-muted);
+    display:     inline-flex;
+    align-items: center;
+}
+
+.gdrive-head-actions {
+    display:     inline-flex;
+    align-items: center;
+    gap:         8px;
+    flex-wrap:   wrap;
+}
+
+.gdrive-view-switcher {
+    display:       inline-flex;
+    align-items:   center;
+    border:        1.5px solid var(--gd-border);
+    border-radius: 10px;
+    overflow:      hidden;
+}
+.gdrive-view-btn {
+    display:      inline-flex;
+    align-items:  center;
+    gap:          5px;
+    padding:      7px 10px;
+    border:       none;
+    border-right: 1.5px solid var(--gd-border);
+    background:   var(--gd-surface);
+    color:        var(--gd-muted);
+    font-size:    12px;
+    font-weight:  600;
+    cursor:       pointer;
+    transition:   background 0.12s, color 0.12s;
+    white-space:  nowrap;
+}
+.gdrive-view-btn:last-child { border-right: none; }
+.gdrive-view-btn:hover      { background: var(--gd-blue-xsoft); color: var(--gd-blue); }
+.gdrive-view-btn.active     { background: var(--gd-blue-soft);  color: var(--gd-blue-dark); }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   SCROLL PANE
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-scroll-pane {
+    overflow:   auto;
+    padding:    14px 18px 20px;
+    min-height: 0;
+}
+
+.gdrive-scroll-pane,
+.gdrive-sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gd-scroll-thumb) var(--gd-scroll-track);
+}
+
+.gdrive-scroll-pane::-webkit-scrollbar,
+.gdrive-sidebar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.gdrive-scroll-pane::-webkit-scrollbar-track,
+.gdrive-sidebar::-webkit-scrollbar-track {
+    background: var(--gd-scroll-track);
+    border-radius: 999px;
+}
+
+.gdrive-scroll-pane::-webkit-scrollbar-thumb,
+.gdrive-sidebar::-webkit-scrollbar-thumb {
+    background: var(--gd-scroll-thumb);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.gdrive-empty-state {
+    padding:   24px 8px;
+    color:     var(--gd-muted);
+    font-size: 14px;
+}
+.gdrive-loading {
+    display:     flex;
+    align-items: center;
+    gap:         10px;
+}
+
+.gdrive-skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.gdrive-skeleton-card {
+    min-height: 236px;
+    display: grid;
+    grid-template-rows: 140px 14px 10px auto;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 14px;
+    border: 1.5px solid var(--gd-skeleton-edge);
+    background: var(--gd-surface);
+}
+
+.gdrive-skeleton-thumb,
+.gdrive-skeleton-title,
+.gdrive-skeleton-meta,
+.gdrive-skeleton-action-btn {
+    background: linear-gradient(
+        90deg,
+        var(--gd-skeleton-base) 20%,
+        var(--gd-skeleton-highlight) 50%,
+        var(--gd-skeleton-base) 80%
+    );
+    background-size: 240% 100%;
+    animation: gdrive-skeleton-shimmer 1.2s infinite linear;
+    border-radius: 10px;
+}
+
+.gdrive-skeleton-thumb {
+    border-radius: 10px;
+}
+
+.gdrive-skeleton-title {
+    width: 78%;
+    height: 14px;
+}
+
+.gdrive-skeleton-meta {
+    width: 48%;
+    height: 10px;
+}
+
+.gdrive-skeleton-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.gdrive-skeleton-action-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+}
+
+.gdrive-skeleton-table,
+.gdrive-skeleton-compact {
+    display: grid;
+    gap: 8px;
+}
+
+.gdrive-skeleton-row,
+.gdrive-skeleton-compact-row {
+    height: 44px;
+    border-radius: 10px;
+    border: 1.5px solid var(--gd-skeleton-edge);
+    background: linear-gradient(
+        90deg,
+        var(--gd-skeleton-base) 20%,
+        var(--gd-skeleton-highlight) 50%,
+        var(--gd-skeleton-base) 80%
+    );
+    background-size: 240% 100%;
+    animation: gdrive-skeleton-shimmer 1.2s infinite linear;
+}
+
+.gdrive-skeleton-compact-row {
+    height: 56px;
+}
+
+@keyframes gdrive-skeleton-shimmer {
+    from { background-position: 200% 0; }
+    to { background-position: -40% 0; }
+}
+@keyframes gdrive-spin {
+    to { transform: rotate(360deg); }
+}
+.gdrive-spin {
+    animation: gdrive-spin 1s linear infinite;
+    color:     var(--gd-blue);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FILE NAME BUTTON
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-name-btn {
+    display:     inline-flex;
+    align-items: center;
+    gap:         8px;
+    border:      none;
+    background:  transparent;
+    padding:     0;
+    color:       var(--gd-text);
+    font-size:   14px;
+    font-weight: 500;
+    cursor:      pointer;
+    text-align:  left;
+    max-width:   100%;
+}
+.gdrive-name-btn span {
+    overflow:      hidden;
+    text-overflow: ellipsis;
+    white-space:   nowrap;
+}
+.gdrive-name-btn:hover span { color: var(--gd-blue); text-decoration: underline; }
+
+.gdrive-folder-asset {
+    width:       20px;
+    height:      20px;
+    object-fit:  contain;
+    flex-shrink: 0;
+}
+.gdrive-file-icon-img {
+    width:       18px;
+    height:      18px;
+    object-fit:  contain;
+    flex-shrink: 0;
+}
+.gdrive-file-dot {
+    width:         8px;
+    height:        8px;
+    border-radius: 50%;
+    background:    var(--gd-muted);
+    flex-shrink:   0;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   ACTION BUTTONS
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-actions {
+    display:     inline-flex;
+    align-items: center;
+    gap:         5px;
+}
+.gdrive-action-btn {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    width:           30px;
+    height:          30px;
+    border:          1.5px solid var(--gd-border);
+    border-radius:   8px;
+    background:      var(--gd-surface);
+    color:           var(--gd-muted);
+    cursor:          pointer;
+    text-decoration: none;
+    transition:      background 0.12s, border-color 0.12s, color 0.12s;
+    flex-shrink:     0;
+}
+.gdrive-action-btn:hover {
+    background:   var(--gd-blue-xsoft);
+    border-color: var(--gd-blue);
+    color:        var(--gd-blue);
+}
+.gdrive-action-btn--open {
+    color: var(--gd-blue-dark);
+    border-color: color-mix(in srgb, var(--gd-blue) 35%, transparent);
+    background: color-mix(in srgb, var(--gd-blue) 14%, transparent);
+}
+.gdrive-action-btn--share {
+    color: var(--gd-accent);
+    border-color: color-mix(in srgb, var(--gd-accent) 35%, transparent);
+    background: color-mix(in srgb, var(--gd-accent) 12%, transparent);
+}
+.gdrive-action-btn--delete:hover {
+    background:   #fee2e2;
+    border-color: #fca5a5;
+    color:        #dc2626;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   LIST VIEW
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-table-wrap {
+    border:        1.5px solid var(--gd-border);
+    border-radius: 12px;
+    overflow:      auto;
+}
+.gdrive-table {
+    width:           100%;
+    border-collapse: collapse;
+    min-width:       760px;
+}
+.gdrive-table th {
+    background:     color-mix(in srgb, var(--gd-blue) 8%, var(--gd-surface) 92%);
+    color:          var(--gd-muted);
+    font-size:      11px;
+    font-weight:    700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding:        9px 12px;
+    border-bottom:  1.5px solid var(--gd-border);
+    text-align:     left;
+    white-space:    nowrap;
+}
+.gdrive-table td {
+    padding:        10px 12px;
+    font-size:      13px;
+    border-bottom:  1px solid var(--gd-border-soft);
+    color:          var(--gd-text);
+    vertical-align: middle;
+}
+.gdrive-table tr:last-child td { border-bottom: none; }
+.gdrive-table tr:hover td      { background: color-mix(in srgb, var(--gd-blue) 8%, var(--gd-surface) 92%); }
+
+.gdrive-mime-cell {
+    display:     inline-flex;
+    align-items: center;
+    gap:         6px;
+    font-size:   12px;
+    color:       var(--gd-muted);
+}
+.gdrive-mime-icon {
+    width:       14px;
+    height:      14px;
+    object-fit:  contain;
+    flex-shrink: 0;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   COMPACT VIEW
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-compact-list {
+    display:        flex;
+    flex-direction: column;
+    gap:            6px;
+}
+.gdrive-compact-item {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    gap:             10px;
+    padding:         9px 12px;
+    border:          1.5px solid var(--gd-border-soft);
+    border-radius:   10px;
+    background:      var(--gd-surface);
+    transition:      border-color 0.12s, background 0.12s;
+}
+.gdrive-compact-item:hover {
+    border-color: var(--gd-blue-soft);
+    background:   color-mix(in srgb, var(--gd-blue) 6%, var(--gd-surface) 94%);
+}
+.gdrive-compact-main {
+    min-width: 0;
+    flex:      1;
+}
+.gdrive-compact-meta {
+    margin-top:  4px;
+    display:     flex;
+    align-items: center;
+    gap:         8px;
+    flex-wrap:   wrap;
+    font-size:   12px;
+    color:       var(--gd-muted);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   GRID VIEW
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-grid {
+    display:               grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap:                   12px;
+}
+.gdrive-card {
+    display:             grid;
+    grid-template-rows:  140px auto auto;
+    gap:                 8px;
+    padding:             10px;
+    border:              1.5px solid var(--gd-border-soft);
+    border-radius:       14px;
+    background:          var(--gd-surface);
+    transition:          border-color 0.15s, box-shadow 0.15s;
+    overflow:            hidden;
+}
+.gdrive-card:hover {
+    border-color: var(--gd-blue);
+    box-shadow:   0 2px 10px rgba(26, 115, 232, 0.12);
+}
+
+/* ── FIX 1: Thumbnail — show a placeholder bg so broken images are hidden ── */
+.gdrive-card-thumb {
+    border-radius:   10px;
+    background:      color-mix(in srgb, var(--gd-blue) 10%, var(--gd-surface) 90%);
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    overflow:        hidden;
+    position:        relative;
+}
+
+.gdrive-grid-folder {
+    width:      60px;
+    height:     60px;
+    object-fit: contain;
+}
+
+/* ── FIX 1: Hide broken img icon, show background instead ── */
+.gdrive-grid-thumb-image {
+    width:      100%;
+    height:     100%;
+    object-fit: cover;
+    display:    block;
+    /* Hide the browser's broken-image icon */
+    color:      transparent;
+    /* Show a nice placeholder while loading */
+    background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);
+}
+
+.gdrive-grid-icon-wrap {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            6px;
+    padding:        12px;
+}
+.gdrive-grid-icon-large {
+    width:      48px;
+    height:     48px;
+    object-fit: contain;
+}
+.gdrive-grid-mime-label {
+    font-size:      11px;
+    color:          var(--gd-muted);
+    font-weight:    600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.gdrive-grid-generic {
+    padding:        12px;
+    font-size:      11px;
+    font-weight:    700;
+    color:          var(--gd-muted);
+    text-align:     center;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.gdrive-card-body { min-width: 0; }
+.gdrive-card-body .gdrive-name-btn { font-size: 13px; max-width: 100%; }
+.gdrive-card-body p {
+    margin:    4px 0 0;
+    font-size: 11px;
+    color:     var(--gd-muted);
+}
+.gdrive-card-actions {
+    display:         flex;
+    justify-content: flex-end;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   ALERT BANNER
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-alert {
+    margin:        0 14px 12px;
+    padding:       10px 14px;
+    border:        1.5px solid #aac4f5;
+    border-radius: 10px;
+    background:    var(--gd-blue-xsoft);
+    color:         var(--gd-blue-dark);
+    font-size:     13px;
+    font-weight:   600;
+    animation: gdrive-alert-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gdrive-alert--error {
+    border-color: #fca5a5;
+    background:   #fee2e2;
+    color:        #991b1b;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FILE PREVIEW MODAL
+   ════════════════════════════════════════════════════════════════════════════ */
+.gdrive-hidden-input { display: none; }
+
+.gdrive-preview-backdrop {
+    position:        fixed;
+    inset:           0;
+    z-index:         1200;
+    background:      rgba(15, 23, 42, 0.58);
+    backdrop-filter: blur(10px);
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    padding:         20px;
+    animation: gdrive-fade-in 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gdrive-preview-modal {
+    width:             min(1100px, 100%);
+    /* ── FIX 1: ensure modal is tall enough to show content ── */
+    height:            min(90vh, 920px);
+    background:        var(--gd-surface);
+    border:            1.5px solid var(--gd-border);
+    border-radius:     16px;
+    overflow:          hidden;
+    display:           grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    transform-origin: center center;
+    animation: gdrive-pop-in 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gdrive-preview-header {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    gap:             10px;
+    padding:         12px 14px;
+    border-bottom:   1.5px solid var(--gd-border);
+    background:      color-mix(in srgb, var(--gd-blue) 8%, var(--gd-surface) 92%);
+    flex-wrap:       wrap;
+}
+.gdrive-preview-title {
+    display:     flex;
+    align-items: center;
+    gap:         10px;
+    min-width:   0;
+}
+.gdrive-preview-type-icon {
+    width:       24px;
+    height:      24px;
+    object-fit:  contain;
+    flex-shrink: 0;
+}
+.gdrive-preview-title strong {
+    display:       block;
+    font-size:     14px;
+    font-weight:   700;
+    color:         var(--gd-text);
+    white-space:   nowrap;
+    overflow:      hidden;
+    text-overflow: ellipsis;
+    max-width:     360px;
+}
+.gdrive-preview-title span {
+    display:   block;
+    font-size: 12px;
+    color:     var(--gd-muted);
+}
+.gdrive-preview-actions {
+    display:     inline-flex;
+    align-items: center;
+    gap:         7px;
+    flex-wrap:   wrap;
+    flex-shrink: 0;
+}
+
+/* ── FIX 1: preview body must fill remaining height ── */
+.gdrive-preview-body {
+    min-height: 0;
+    height:     100%;
+    overflow:   hidden;
+    display:    flex;
+    position:   relative;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a2e;
+}
+
+/* ── FIX 1: iframe fills full body ── */
+.gdrive-preview-frame {
+    width:   100%;
+    height:  100%;
+    border:  none;
+    display: block;
+}
+
+/* ── FIX 1: image fits within body without cropping ── */
+.gdrive-preview-image {
+    max-width:  100%;
+    max-height: 100%;
+    width:      auto;
+    height:     auto;
+    object-fit: contain;
+    display:    block;
+}
+
+.gdrive-preview-fallback {
+    display: none;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    color: #e5e7eb;
+    font-size: 14px;
+}
+
+.gdrive-preview-fallback.is-visible {
+    display: flex;
+}
+
+.gdrive-preview-fallback--signin {
+    position: absolute;
+    left: 50%;
+    top: 66%;
+    transform: translateX(-50%);
+    width: min(320px, calc(100% - 32px));
+    z-index: 2;
+    pointer-events: none;
+}
+
+.gdrive-preview-fallback--signin .gdrive-btn {
+    pointer-events: auto;
+}
+
+.gdrive-preview-fallback-divider {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: color-mix(in srgb, var(--gd-text) 62%, transparent);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: lowercase;
+}
+
+.gdrive-preview-fallback-divider::before,
+.gdrive-preview-fallback-divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: color-mix(in srgb, var(--gd-border) 80%, transparent);
+}
+
+.gdrive-preview-fallback--image {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+.gdrive-preview-loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: color-mix(in srgb, var(--gd-text) 78%, transparent);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.gdrive-preview-backdrop.is-closing {
+    animation: gdrive-fade-out 220ms ease-in forwards;
+}
+
+.gdrive-preview-modal.is-closing {
+    animation: gdrive-pop-out 220ms ease-in forwards;
+}
+
+@keyframes gdrive-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes gdrive-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes gdrive-pop-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.72);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes gdrive-pop-out {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.72);
+    }
+}
+
+@keyframes gdrive-page-in {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gdrive-alert-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gdrive-page-head-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gdrive-page-panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.gdrive-dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    background: rgba(2, 6, 23, 0);
+    backdrop-filter: blur(0px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: background 0.22s ease, backdrop-filter 0.22s ease;
+}
+
+.gdrive-dialog-backdrop.open {
+    background: rgba(2, 6, 23, 0.55);
+    backdrop-filter: blur(8px);
+}
+
+.gdrive-dialog-backdrop.closing {
+    background: rgba(2, 6, 23, 0);
+    backdrop-filter: blur(0px);
+}
+
+.gdrive-dialog {
+    width: min(460px, 100%);
+    background: var(--gd-surface);
+    border: 1.5px solid var(--gd-border);
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(2, 6, 23, 0.22);
+    padding: 18px;
+    opacity: 0;
+    transform: translateY(22px) scale(0.96);
+    transform-origin: center top;
+    transition: opacity 0.24s cubic-bezier(0.22, 1, 0.36, 1), transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gdrive-dialog.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.gdrive-dialog.closing {
+    opacity: 0;
+    transform: translateY(14px) scale(0.975);
+}
+
+.gdrive-dialog h3 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--gd-text);
+}
+
+.gdrive-dialog p {
+    margin: 8px 0 0;
+    font-size: 13px;
+    color: var(--gd-muted);
+}
+
+.gdrive-dialog-label {
+    display: block;
+    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gd-text);
+}
+
+.gdrive-dialog-input {
+    margin-top: 14px;
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    border: 1.5px solid var(--gd-border);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--gd-text);
+    background: var(--gd-surface);
+}
+
+.gdrive-dialog-input:focus {
+    outline: none;
+    border-color: var(--gd-blue);
+}
+
+.gdrive-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+    .gdrive-workspace {
+        height: clamp(600px, calc(100vh - 60px), 900px);
+    }
+    .gdrive-toolbar {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .gdrive-toolbar-actions {
+        justify-self: start;
+    }
+    .gdrive-explorer {
+        grid-template-columns: 1fr;
+        grid-template-rows:    auto minmax(0, 1fr);
+    }
+    .gdrive-sidebar {
+        flex-direction: row;
+        flex-wrap:      wrap;
+        border-right:   none;
+        border-bottom:  1.5px solid var(--gd-border);
+        padding:        8px 10px;
+        overflow-y:     visible;
+        overflow-x:     auto;
+    }
+    .gdrive-nav {
+        flex-direction: row;
+        margin-top:     0;
+    }
+    .gdrive-nav-item       { border-radius: 20px; }
+    .gdrive-preview-header { flex-direction: column; align-items: flex-start; }
+}

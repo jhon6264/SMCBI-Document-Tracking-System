@@ -1,0 +1,595 @@
+.admin-signatories-page {
+    min-height: 100%;
+    padding: 28px;
+    background:
+        radial-gradient(circle at top right, color-mix(in srgb, var(--asig-primary) 12%, transparent), transparent 32%),
+        linear-gradient(180deg, color-mix(in srgb, var(--asig-panel) 74%, var(--asig-page-bg) 26%), var(--asig-page-bg));
+    color: var(--asig-text);
+    font-family: var(--asig-font);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.asig-hero-card,
+.asig-registry-card,
+.asig-guidance-card,
+.asig-stat-card,
+.asig-modal {
+    border: 1px solid var(--asig-border);
+    background: color-mix(in srgb, var(--asig-card) 90%, var(--asig-surface) 10%);
+    box-shadow: var(--asig-shadow);
+}
+
+.asig-hero-card {
+    border-radius: 28px;
+    padding: 26px 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    gap: 22px;
+    align-items: end;
+}
+
+.asig-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--asig-text-muted);
+    margin-bottom: 12px;
+}
+
+.asig-breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.asig-breadcrumb a:hover {
+    color: var(--asig-primary);
+}
+
+.asig-hero-description {
+    margin: 10px 0 0;
+    max-width: 68ch;
+    line-height: 1.65;
+    color: var(--asig-text-muted);
+}
+
+.asig-hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+}
+
+.asig-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    min-height: 52px;
+    border-radius: 18px;
+    border: 1px solid var(--asig-border);
+    background: color-mix(in srgb, var(--asig-surface) 90%, transparent);
+    color: var(--asig-text-muted);
+}
+
+.asig-search input,
+.asig-field input,
+.asig-field select,
+.asig-field textarea,
+.asig-card-filters select {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--asig-text);
+    font: inherit;
+}
+
+.asig-search input::placeholder,
+.asig-field input::placeholder,
+.asig-field textarea::placeholder {
+    color: var(--asig-text-muted);
+}
+
+.asig-btn {
+    border: 1px solid var(--asig-border);
+    border-radius: 16px;
+    min-height: 48px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.asig-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.asig-btn:hover,
+.asig-icon-btn:hover {
+    transform: translateY(-1px);
+}
+
+.asig-btn--primary {
+    background: linear-gradient(135deg, var(--asig-primary), var(--asig-primary-dark));
+    color: var(--asig-white);
+    border-color: transparent;
+}
+
+.asig-btn--ghost {
+    background: transparent;
+    color: var(--asig-text);
+}
+
+.asig-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.asig-error-banner,
+.asig-inline-error {
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, #ef4444 36%, var(--asig-border) 64%);
+    background: color-mix(in srgb, #ef4444 10%, transparent);
+    color: color-mix(in srgb, #ef4444 82%, var(--asig-text) 18%);
+    box-shadow: 0 14px 30px color-mix(in srgb, #ef4444 10%, transparent);
+    animation: asig-alert-in 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.asig-error-banner {
+    padding: 14px 16px;
+}
+
+.asig-inline-error {
+    padding: 10px 12px;
+    font-size: 12px;
+}
+
+.asig-stat-card {
+    border-radius: 22px;
+    padding: 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.asig-stat-card--primary {
+    background: linear-gradient(160deg, color-mix(in srgb, var(--asig-primary) 24%, var(--asig-card) 76%), var(--asig-card));
+}
+
+.asig-stat-card--success {
+    background: linear-gradient(160deg, color-mix(in srgb, var(--asig-accent) 18%, var(--asig-card) 82%), var(--asig-card));
+}
+
+.asig-stat-card--muted {
+    background: linear-gradient(160deg, color-mix(in srgb, var(--asig-hint) 34%, var(--asig-card) 66%), var(--asig-card));
+}
+
+.asig-stat-card--accent {
+    background: linear-gradient(160deg, color-mix(in srgb, var(--asig-teal-tint) 90%, var(--asig-card) 10%), var(--asig-card));
+}
+
+.asig-stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--asig-white) 10%, transparent);
+    font-size: 18px;
+}
+
+.asig-stat-value {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.asig-stat-label {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.asig-stat-subtext {
+    margin: 8px 0 0;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--asig-text-muted);
+}
+
+.asig-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+    gap: 18px;
+}
+
+.asig-registry-card,
+.asig-guidance-card {
+    border-radius: 24px;
+    padding: 22px;
+}
+
+.asig-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.asig-card-header h2,
+.asig-guidance-card h2,
+.asig-modal-header h2,
+.asig-guidance-panel h3 {
+    margin: 0;
+}
+
+.asig-card-header p,
+.asig-modal-header p,
+.asig-guidance-panel p {
+    margin: 8px 0 0;
+    color: var(--asig-text-muted);
+    line-height: 1.5;
+}
+
+.asig-card-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.asig-card-filters select,
+.asig-field select {
+    min-width: 140px;
+    border: 1px solid var(--asig-border);
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: color-mix(in srgb, var(--asig-surface) 92%, transparent);
+}
+
+.asig-table-wrap {
+    overflow: auto;
+    border: 1px solid var(--asig-border);
+    border-radius: 18px;
+}
+
+.asig-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.asig-table th,
+.asig-table td {
+    padding: 15px 16px;
+    border-bottom: 1px solid var(--asig-border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.asig-table th {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--asig-text-muted);
+    background: color-mix(in srgb, var(--asig-panel) 52%, var(--asig-card) 48%);
+}
+
+.asig-table tbody tr:hover {
+    background: color-mix(in srgb, var(--asig-blue-tint) 65%, transparent);
+}
+
+.asig-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.asig-placeholder-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.asig-placeholder-cell strong {
+    font-size: 14px;
+}
+
+.asig-placeholder-cell span,
+.asig-empty-state span,
+.asig-guidance-list,
+.asig-token-preview p {
+    color: var(--asig-text-muted);
+    line-height: 1.6;
+}
+
+.asig-token-chip,
+.asig-guidance-panel code,
+.asig-token-preview code {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--asig-primary) 12%, transparent);
+    color: var(--asig-primary-dark);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.asig-pill,
+.asig-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.asig-pill {
+    background: color-mix(in srgb, var(--asig-hint) 45%, transparent);
+}
+
+.asig-status--active {
+    background: color-mix(in srgb, var(--asig-accent) 18%, transparent);
+    color: color-mix(in srgb, var(--asig-accent) 82%, var(--asig-text) 18%);
+}
+
+.asig-status--inactive {
+    background: color-mix(in srgb, #ef4444 14%, transparent);
+    color: color-mix(in srgb, #ef4444 82%, var(--asig-text) 18%);
+}
+
+.asig-action-row {
+    display: flex;
+    gap: 8px;
+}
+
+.asig-icon-btn {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    border: 1px solid var(--asig-border);
+    background: transparent;
+    color: var(--asig-text);
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.asig-icon-btn:hover {
+    border-color: var(--asig-border-hover);
+    background: color-mix(in srgb, var(--asig-primary) 9%, transparent);
+}
+
+.asig-icon-btn--danger:hover {
+    background: color-mix(in srgb, #ef4444 14%, transparent);
+    color: #ef4444;
+}
+
+.asig-empty-cell {
+    padding: 32px 20px !important;
+}
+
+.asig-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.asig-empty-state svg {
+    font-size: 26px;
+    color: var(--asig-text-muted);
+}
+
+.asig-guidance-card {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.asig-guidance-list {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.asig-guidance-panel {
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid var(--asig-border);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--asig-panel) 72%, transparent), transparent);
+}
+
+.asig-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: background 0.24s ease, backdrop-filter 0.24s ease;
+}
+
+.asig-modal-backdrop.open {
+    background: rgba(2, 6, 23, 0.56);
+    backdrop-filter: blur(9px);
+}
+
+.asig-modal-backdrop.closing {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+}
+
+.asig-modal {
+    width: min(720px, 100%);
+    border-radius: 24px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+    transform-origin: center top;
+    transition: opacity 0.26s cubic-bezier(0.22, 1, 0.36, 1), transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.asig-modal.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.asig-modal.closing {
+    opacity: 0;
+    transform: translateY(16px) scale(0.975);
+}
+
+.asig-modal [data-asig-modal-item] {
+    transform-origin: center top;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+}
+
+.asig-modal-header,
+.asig-modal-footer {
+    padding: 20px 22px;
+}
+
+.asig-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    border-bottom: 1px solid var(--asig-border);
+}
+
+.asig-modal-close {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    border: 1px solid var(--asig-border);
+    background: transparent;
+    color: var(--asig-text);
+    cursor: pointer;
+}
+
+.asig-modal-body {
+    padding: 22px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.asig-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.asig-field span,
+.asig-token-preview-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--asig-text-muted);
+}
+
+.asig-field input,
+.asig-field textarea {
+    border: 1px solid var(--asig-border);
+    border-radius: 16px;
+    padding: 13px 14px;
+    background: color-mix(in srgb, var(--asig-surface) 92%, transparent);
+    resize: vertical;
+}
+
+.asig-field--wide,
+.asig-token-preview {
+    grid-column: 1 / -1;
+}
+
+.asig-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    align-self: end;
+}
+
+.asig-toggle input {
+    accent-color: var(--asig-primary);
+}
+
+.asig-token-preview {
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px dashed var(--asig-border-hover);
+    background: color-mix(in srgb, var(--asig-blue-tint) 60%, transparent);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.asig-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid var(--asig-border);
+}
+
+@keyframes asig-alert-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 1180px) {
+    .asig-stat-grid,
+    .asig-workspace,
+    .asig-hero-card {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .admin-signatories-page {
+        padding: 18px;
+    }
+
+    .asig-modal-body {
+        grid-template-columns: 1fr;
+    }
+
+    .asig-card-header,
+    .asig-hero-actions,
+    .asig-modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .asig-table th,
+    .asig-table td {
+        padding: 12px;
+    }
+}

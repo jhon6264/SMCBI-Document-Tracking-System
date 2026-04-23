@@ -1,0 +1,985 @@
+.ua-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 0 48px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.ua-page::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.ua-shell-head {
+    padding: 4px 0 18px;
+}
+
+.ua-shell-title {
+    margin: 0;
+    color: var(--user-text);
+    font-size: clamp(2rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.ua-settings-tabs {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--user-border);
+    margin-bottom: 24px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.ua-settings-tabs::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.ua-settings-tabs button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-shrink: 0;
+    min-height: 46px;
+    padding: 0 14px;
+    border: none;
+    background: transparent;
+    color: var(--user-text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.18s ease;
+}
+
+.ua-settings-tabs button svg {
+    font-size: 15px;
+}
+
+.ua-settings-tabs button::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    border-radius: 999px;
+    background: transparent;
+    transition: background 0.18s ease;
+}
+
+.ua-settings-tabs button:hover {
+    color: var(--user-text);
+}
+
+.ua-settings-tabs button.active {
+    color: var(--user-primary);
+}
+
+.ua-settings-tabs button.active::after {
+    background: var(--user-primary);
+}
+
+.ua-content-card {
+    border: 1px solid var(--user-border);
+    border-radius: 18px;
+    background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--user-surface) 82%, transparent),
+        color-mix(in srgb, var(--user-panel) 26%, var(--user-surface) 74%)
+    );
+    backdrop-filter: blur(18px);
+    box-shadow: 0 22px 54px color-mix(in srgb, var(--user-text) 10%, transparent);
+    overflow: hidden;
+}
+
+.ua-settings-panel {
+    min-width: 0;
+}
+
+.ua-settings-panel [data-ua-motion-item] {
+    transform-origin: center top;
+    backface-visibility: hidden;
+}
+
+.ua-settings-panel [data-ua-asset-item],
+.ua-modal [data-ua-modal-item],
+.ua-upload-progress[data-ua-progress-card] {
+    transform-origin: center top;
+    backface-visibility: hidden;
+}
+
+.ua-section-head {
+    padding: 24px 28px 18px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.ua-section-title {
+    margin: 0 0 6px;
+    color: var(--user-text);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.ua-section-title--icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ua-section-title--icon svg {
+    font-size: 18px;
+    color: var(--user-primary);
+}
+
+.ua-section-sub {
+    margin: 0;
+    color: var(--user-text-muted);
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.ua-section-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--user-primary) 18%, var(--user-border));
+    background: color-mix(in srgb, var(--user-surface) 64%, transparent);
+    color: var(--user-text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.ua-esignature-shell {
+    display: grid;
+    gap: 18px;
+}
+
+.ua-esignature-shell .ua-section-head {
+    padding: 6px 0 0;
+}
+
+.ua-signature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+.ua-signature-card {
+    position: relative;
+    display: grid;
+    gap: 18px;
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid color-mix(in srgb, var(--user-border) 88%, transparent);
+    border-radius: 22px;
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--user-surface) 72%, transparent),
+            color-mix(in srgb, var(--user-panel) 30%, var(--user-surface) 70%)
+        );
+    backdrop-filter: blur(20px);
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, #ffffff 20%, transparent),
+        0 24px 55px color-mix(in srgb, var(--user-text) 10%, transparent);
+    will-change: transform, opacity;
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.22s ease;
+}
+
+.ua-signature-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, #ffffff 24%, transparent),
+        0 28px 62px color-mix(in srgb, var(--user-text) 12%, transparent);
+}
+
+.ua-signature-card--hero {
+    grid-column: 1 / -1;
+}
+
+.ua-signature-card.is-dragging {
+    opacity: 0.78;
+    transform: scale(0.985);
+}
+
+.ua-signature-card.is-drop-target {
+    border-color: color-mix(in srgb, var(--user-primary) 34%, var(--user-border));
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--user-primary) 18%, transparent),
+        0 28px 62px color-mix(in srgb, var(--user-primary) 14%, transparent);
+}
+
+.ua-signature-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.ua-signature-card-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
+}
+
+.ua-signature-card-title h3 {
+    margin: 0 0 4px;
+    color: var(--user-text);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.ua-signature-card-title p {
+    margin: 0;
+    color: var(--user-text-muted);
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+.ua-signature-card-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--user-primary) 20%, var(--user-border));
+    background: color-mix(in srgb, var(--user-primary) 10%, transparent);
+    color: var(--user-primary);
+    font-size: 17px;
+}
+
+.ua-signature-card-drag {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 12px;
+    border: 1px solid var(--user-border);
+    background: color-mix(in srgb, var(--user-surface) 82%, transparent);
+    color: var(--user-text-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+}
+
+.ua-signature-card-drag:hover {
+    border-color: color-mix(in srgb, var(--user-primary) 24%, var(--user-border));
+    color: var(--user-primary);
+}
+
+.ua-signature-card-drag:active {
+    cursor: grabbing;
+}
+
+.ua-signature-card-body {
+    min-width: 0;
+    display: grid;
+    gap: 14px;
+}
+
+.ua-divider {
+    height: 1px;
+    background: var(--user-border);
+}
+
+.ua-form-row {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 24px;
+    padding: 22px 28px;
+    align-items: start;
+}
+
+.ua-form-label span {
+    display: block;
+    color: var(--user-text);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.ua-form-content,
+.ua-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.ua-profile-identity {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ua-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--user-primary) 14%, var(--user-panel));
+    border: 1px solid color-mix(in srgb, var(--user-primary) 18%, var(--user-border));
+    color: var(--user-primary-dark);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.ua-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ua-profile-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ua-profile-copy strong {
+    color: var(--user-text);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.ua-profile-copy span {
+    color: var(--user-text-muted);
+    font-size: 13px;
+}
+
+.ua-input {
+    width: 100%;
+    max-width: 480px;
+    height: 44px;
+    border: 1px solid var(--user-border);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--user-surface) 88%, var(--user-panel) 12%);
+    color: var(--user-text);
+    padding: 0 14px;
+    font-size: 13px;
+}
+
+.ua-input[readonly] {
+    cursor: default;
+}
+
+.ua-signature-status {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.ua-signature-card--hero .ua-signature-status {
+    align-items: stretch;
+}
+
+.ua-active-preview {
+    width: 150px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--user-border);
+    border-radius: 12px;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--user-surface) 84%, var(--user-panel) 16%),
+            color-mix(in srgb, var(--user-panel) 50%, var(--user-surface) 50%)
+        ),
+        repeating-linear-gradient(
+            45deg,
+            color-mix(in srgb, var(--user-border) 16%, transparent),
+            color-mix(in srgb, var(--user-border) 16%, transparent) 8px,
+            transparent 8px,
+            transparent 16px
+        );
+}
+
+.ua-signature-card--hero .ua-active-preview {
+    width: min(240px, 100%);
+    height: 120px;
+}
+
+.ua-active-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+}
+
+.ua-active-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ua-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--user-primary) 10%, var(--user-surface));
+    color: var(--user-primary-dark);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.ua-active-meta,
+.ua-muted {
+    color: var(--user-text-muted);
+    font-size: 12px;
+}
+
+.ua-inline-tabs {
+    display: inline-flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ua-inline-tabs button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1px solid var(--user-border);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--user-surface) 88%, var(--user-panel) 12%);
+    color: var(--user-text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.ua-inline-tabs button.active {
+    border-color: color-mix(in srgb, var(--user-primary) 24%, var(--user-border));
+    background: color-mix(in srgb, var(--user-primary) 8%, var(--user-surface));
+    color: var(--user-primary-dark);
+}
+
+.ua-inline-tabs--compact button {
+    min-height: 34px;
+    padding: 0 12px;
+}
+
+.ua-card-empty {
+    min-height: 150px;
+    display: grid;
+    place-items: center;
+    border: 1px dashed color-mix(in srgb, var(--user-primary) 18%, var(--user-border));
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--user-surface) 66%, transparent);
+}
+
+.ua-upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px;
+    border: 1px dashed color-mix(in srgb, var(--user-primary) 26%, var(--user-border));
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--user-primary) 4%, var(--user-surface));
+}
+
+.ua-signature-card-body .ua-upload-progress {
+    width: 100%;
+    max-width: none;
+}
+
+.ua-upload-zone span {
+    color: var(--user-text-muted);
+    font-size: 12px;
+}
+
+.ua-upload-progress {
+    width: min(100%, 420px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 4px;
+    will-change: transform, opacity;
+}
+
+.ua-upload-progress-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.ua-upload-progress-head strong {
+    color: var(--user-text);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ua-upload-progress-head span {
+    color: var(--user-text-muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ua-upload-progress-bar {
+    width: 100%;
+    height: 9px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--user-panel) 70%, var(--user-surface) 30%);
+    border: 1px solid color-mix(in srgb, var(--user-border) 80%, transparent);
+}
+
+.ua-upload-progress-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--user-primary), var(--user-primary-dark));
+    transition: width 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ua-upload-progress--danger .ua-upload-progress-head strong,
+.ua-upload-progress--danger .ua-upload-progress-head span {
+    color: color-mix(in srgb, #ef4444 72%, var(--user-text) 28%);
+}
+
+.ua-upload-progress-bar--danger {
+    background: color-mix(in srgb, #ef4444 10%, var(--user-surface));
+    border-color: color-mix(in srgb, #ef4444 22%, var(--user-border));
+}
+
+.ua-upload-progress-fill--danger {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.ua-file-input {
+    display: none;
+}
+
+.ua-canvas-wrap {
+    border: 1px solid var(--user-border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--user-surface) 96%, var(--user-panel) 4%);
+}
+
+.ua-canvas {
+    width: 100%;
+    height: 220px;
+    display: block;
+}
+
+.ua-draw-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ua-draw-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.ua-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 16px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+}
+
+.ua-btn--primary {
+    border: 1px solid var(--user-primary);
+    background: var(--user-primary);
+    color: var(--user-white);
+}
+
+.ua-btn--primary:hover:not(:disabled) {
+    border-color: var(--user-primary-dark);
+    background: var(--user-primary-dark);
+}
+
+.ua-btn--ghost {
+    border: 1px solid var(--user-border);
+    background: color-mix(in srgb, var(--user-surface) 88%, var(--user-panel) 12%);
+    color: var(--user-text);
+}
+
+.ua-btn--ghost:hover:not(:disabled),
+.ua-inline-tabs button:hover:not(:disabled) {
+    border-color: var(--user-border-hover);
+    color: var(--user-text);
+}
+
+.ua-btn--danger {
+    border: 1px solid #dc2626;
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.ua-btn--danger:hover:not(:disabled) {
+    border-color: #b91c1c;
+    background: #b91c1c;
+}
+
+.ua-notice {
+    max-width: 480px;
+    padding: 10px 12px;
+    border: 1px solid;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1.6;
+    animation: ua-notice-in 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ua-notice--error {
+    border-color: color-mix(in srgb, #ef4444 26%, var(--user-border));
+    background: color-mix(in srgb, #ef4444 7%, var(--user-surface));
+    color: color-mix(in srgb, #ef4444 74%, var(--user-text) 26%);
+}
+
+.ua-notice--success {
+    border-color: color-mix(in srgb, #22c55e 26%, var(--user-border));
+    background: color-mix(in srgb, #22c55e 7%, var(--user-surface));
+    color: color-mix(in srgb, var(--user-accent) 72%, var(--user-text) 28%);
+}
+
+.ua-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0);
+    backdrop-filter: blur(0px);
+    transition: background 0.22s ease, backdrop-filter 0.22s ease;
+}
+
+.ua-modal-backdrop.open {
+    background: rgba(15, 23, 42, 0.46);
+    backdrop-filter: blur(6px);
+}
+
+.ua-modal-backdrop.closing {
+    background: rgba(15, 23, 42, 0);
+    backdrop-filter: blur(0px);
+}
+
+.ua-modal {
+    width: min(100%, 460px);
+    border: 1px solid var(--user-border);
+    border-radius: 18px;
+    background: var(--user-surface);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+    transform-origin: center top;
+    transition: opacity 0.24s cubic-bezier(0.22, 1, 0.36, 1), transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ua-modal.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.ua-modal.closing {
+    opacity: 0;
+    transform: translateY(12px) scale(0.975);
+}
+
+.ua-modal-head,
+.ua-modal-body,
+.ua-modal-actions {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.ua-modal-head {
+    padding-top: 24px;
+    padding-bottom: 16px;
+}
+
+.ua-modal-head h2 {
+    margin: 0 0 8px;
+    color: var(--user-text);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.ua-modal-head p {
+    margin: 0;
+    color: var(--user-text-muted);
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.ua-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 4px;
+    padding-bottom: 20px;
+}
+
+.ua-modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ua-modal-field span {
+    color: var(--user-text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.ua-modal-field input {
+    width: 100%;
+    height: 44px;
+    border: 1px solid var(--user-border);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--user-surface) 88%, var(--user-panel) 12%);
+    color: var(--user-text);
+    padding: 0 14px;
+    font-size: 13px;
+}
+
+.ua-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 16px;
+    padding-bottom: 24px;
+    border-top: 1px solid var(--user-border);
+}
+
+.ua-asset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 12px;
+}
+
+.ua-asset {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--user-border);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--user-surface) 92%, var(--user-panel) 8%);
+    will-change: transform, opacity;
+}
+
+.ua-asset--active {
+    border-color: color-mix(in srgb, var(--user-primary) 28%, var(--user-border));
+    background: color-mix(in srgb, var(--user-primary) 4%, var(--user-surface));
+}
+
+.ua-asset-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--user-primary) 10%, var(--user-surface));
+    color: var(--user-primary-dark);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.ua-asset-thumb {
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--user-surface) 84%, var(--user-panel) 16%),
+            color-mix(in srgb, var(--user-panel) 48%, var(--user-surface) 52%)
+        ),
+        repeating-linear-gradient(
+            45deg,
+            color-mix(in srgb, var(--user-border) 14%, transparent),
+            color-mix(in srgb, var(--user-border) 14%, transparent) 8px,
+            transparent 8px,
+            transparent 16px
+        );
+}
+
+.ua-asset-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+}
+
+.ua-asset-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ua-asset-type {
+    color: var(--user-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.ua-asset-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.ua-asset-actions button {
+    min-height: 34px;
+    padding: 0 12px;
+    border: 1px solid var(--user-border);
+    border-radius: 8px;
+    background: var(--user-surface);
+    color: var(--user-text);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ua-asset-actions button.is-danger {
+    color: color-mix(in srgb, #ef4444 72%, var(--user-text) 28%);
+    border-color: color-mix(in srgb, #ef4444 20%, var(--user-border));
+}
+
+.ua-btn:disabled,
+.ua-asset-actions button:disabled {
+    opacity: 0.56;
+    cursor: not-allowed;
+}
+
+@keyframes ua-notice-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 820px) {
+    .ua-form-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .ua-section-head,
+    .ua-form-row {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .ua-signature-status {
+        align-items: flex-start;
+    }
+
+    .ua-signature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ua-signature-card--hero {
+        grid-column: auto;
+    }
+
+    .ua-esignature-shell .ua-section-head {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .ua-settings-tabs button {
+        padding: 0 12px;
+        font-size: 13px;
+    }
+
+    .ua-input,
+    .ua-notice {
+        max-width: 100%;
+    }
+
+    .ua-inline-tabs {
+        width: 100%;
+    }
+
+    .ua-inline-tabs button,
+    .ua-btn,
+    .ua-asset-actions button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .ua-draw-actions,
+    .ua-asset-actions,
+    .ua-signature-card-head,
+    .ua-section-head {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ua-asset-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ua-modal-actions {
+        flex-direction: column;
+    }
+
+    .ua-signature-card {
+        padding: 18px;
+    }
+
+    .ua-signature-card-title {
+        gap: 10px;
+    }
+
+    .ua-signature-card-drag {
+        align-self: flex-end;
+    }
+}
