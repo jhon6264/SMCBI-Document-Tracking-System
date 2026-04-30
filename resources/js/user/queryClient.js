@@ -2,6 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 
 const THIRTY_MINUTES_MS = 30 * 60 * 1000;
+const ONE_HOUR_MS = 60 * 60 * 1000;
 
 export const userQueryClient = new QueryClient({
     defaultOptions: {
@@ -25,4 +26,4 @@ export const userQueryPersister =
           })
         : null;
 
-export const userQueryPersistMaxAgeMs = THIRTY_MINUTES_MS;
+export const userQueryPersistMaxAgeMs = ONE_HOUR_MS;
